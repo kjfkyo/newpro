@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.TBasiCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.hm.entity.TBasiCode" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="FLAG" property="flag" jdbcType="VARCHAR" />
+    <result column="KIND" property="kind" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DATA_SJ" property="dataSj" jdbcType="VARCHAR" />
+    <result column="ORDERB" property="orderb" jdbcType="DECIMAL" />
+    <result column="CODE_NR" property="codeNr" jdbcType="VARCHAR" />
+    <result column="DELFLAG" property="delflag" jdbcType="VARCHAR" />
+    <result column="GRADE" property="grade" jdbcType="DECIMAL" />
+    <result column="RELKIND" property="relkind" jdbcType="VARCHAR" />
+    <result column="RELATION" property="relation" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, FLAG, KIND, "NAME", DATA_SJ, ORDERB, CODE_NR, DELFLAG, GRADE, RELKIND, RELATION, 
+    CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER
+  </sql>
+ 
+  
+   <select id="getTBasiCodeById" resultType="com.hm.entity.TBasiCode">
+		select * from T_BASI_CODE
+		where
+		id = #{id} and delflag = '0'
+	</select>
+  <select id="findTBasiCodeByPage" resultType="com.hm.entity.TBasiCode">
+        select * from T_BASI_CODE where delflag = '0' 
+
+        <if test="keyword!=null">
+            and ( name LIKE concat(concat('%',#{keyword}),'%'))
+        </if>
+		and kind = #{flag,jdbcType=VARCHAR}
+        order by create_time desc
+    </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from HMDN.T_BASI_CODE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from HMDN.T_BASI_CODE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hm.entity.TBasiCode" >
+    insert into HMDN.T_BASI_CODE (ID, FLAG, KIND, 
+      "NAME", DATA_SJ, ORDERB, 
+      CODE_NR, DELFLAG, GRADE, 
+      RELKIND, RELATION, CREATE_TIME, 
+      CREATE_USER, UPDATE_TIME, UPDATE_USER
+      )
+    values (#{id,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{dataSj,jdbcType=VARCHAR}, #{orderb,jdbcType=DECIMAL}, 
+      #{codeNr,jdbcType=VARCHAR}, #{delflag,jdbcType=VARCHAR}, #{grade,jdbcType=DECIMAL}, 
+      #{relkind,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, #{updateUser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hm.entity.TBasiCode" >
+    insert into HMDN.T_BASI_CODE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      FLAG,
+      KIND,
+      "NAME",
+      DATA_SJ,
+      ORDERB,
+      CODE_NR,
+      DELFLAG,
+      GRADE,
+      RELKIND,
+      RELATION,
+      CREATE_TIME,
+      CREATE_USER,
+      UPDATE_TIME,
+      UPDATE_USER,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      #{flag,jdbcType=VARCHAR},
+      #{flag,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{dataSj,jdbcType=VARCHAR},
+      #{orderb,jdbcType=DECIMAL},
+      #{codeNr,jdbcType=VARCHAR},
+      #{delflag,jdbcType=VARCHAR},
+      #{grade,jdbcType=DECIMAL},
+      #{relkind,jdbcType=VARCHAR},
+      #{relation,jdbcType=VARCHAR},
+      #{createTime,jdbcType=DATE},
+      #{createUser,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=DATE},
+      #{updateUser,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hm.entity.TBasiCode" >
+    update HMDN.T_BASI_CODE
+    <set >
+      <if test="flag != null" >
+        FLAG = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null" >
+        KIND = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSj != null" >
+        DATA_SJ = #{dataSj,jdbcType=VARCHAR},
+      </if>
+      <if test="orderb != null" >
+        ORDERB = #{orderb,jdbcType=DECIMAL},
+      </if>
+      <if test="codeNr != null" >
+        CODE_NR = #{codeNr,jdbcType=VARCHAR},
+      </if>
+      <if test="delflag != null" >
+        DELFLAG = #{delflag,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        GRADE = #{grade,jdbcType=DECIMAL},
+      </if>
+      <if test="relkind != null" >
+        RELKIND = #{relkind,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        RELATION = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hm.entity.TBasiCode" >
+    update HMDN.T_BASI_CODE
+    set FLAG = #{flag,jdbcType=VARCHAR},
+      KIND = #{flag,jdbcType=VARCHAR},
+      "NAME" = #{name,jdbcType=VARCHAR},
+      DATA_SJ = #{dataSj,jdbcType=VARCHAR},
+      ORDERB = #{orderb,jdbcType=DECIMAL},
+      CODE_NR = #{codeNr,jdbcType=VARCHAR},
+      DELFLAG = #{delflag,jdbcType=VARCHAR},
+      GRADE = #{grade,jdbcType=DECIMAL},
+      RELKIND = #{relkind,jdbcType=VARCHAR},
+      RELATION = #{relation,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectCodeByDep" resultType="String">
+  	select name from T_BASI_CODE where kind='dep' and delflag ='0'
+  </select>
+</mapper>

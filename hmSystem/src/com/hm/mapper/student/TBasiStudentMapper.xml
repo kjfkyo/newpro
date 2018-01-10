@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.mapper.student.TBasiStudentMapper">
+	<select id="findByNamePho" resultType="TBasiStudent">
+		select id from T_BASI_STUDENT where name=#{name} and phone=#{phone}
+	</select>
+	<select id="findTBStuByPage" resultType="TBasiStudent">
+		select * from T_BASI_STUDENT where 1=1
+		<if test="role!='admin'">
+			and create_user_role = #{role}
+		</if>
+        <if test="name!=null">
+            and (name LIKE concat(concat('%',#{name}),'%') )
+        </if>
+        <if test="phone!=null">
+            and (phone LIKE concat(concat('%',#{phone}),'%') )
+        </if>
+        <if test="basState!=null">
+            and (bas_state LIKE concat(concat('%',#{basState}),'%') )
+        </if>
+        order by create_time desc
+	</select>
+	
+	<select id="findByStuId" resultType="TBasiStudent">
+		select * from T_BASI_STUDENT where id = #{id}
+	</select>
+	
+	<insert id="save">
+		insert into T_BASI_STUDENT
+		(id, name,age,phone,edu,source,channel,channel_detail,getpeo,doorday,bas_state,bas_mark,
+		create_time,create_user,create_user_role) 
+		values 
+		(#{tbStu.id},#{tbStu.name},#{tbStu.age},#{tbStu.phone},#{tbStu.edu},#{tbStu.source},
+		#{tbStu.channel},#{tbStu.channelDetail},#{tbStu.getpeo},#{tbStu.doorday},#{tbStu.basState},
+		#{tbStu.basMark},#{tbStu.createTime},#{tbStu.createUser},#{tbStu.createUserRole})
+	</insert>
+	
+	<update id="update">
+		update T_BASI_STUDENT set 
+		name=#{tbStu.name},age=#{tbStu.age},phone=#{tbStu.phone},edu=#{tbStu.edu},source=#{tbStu.source},
+		channel=#{tbStu.channel},channel_detail=#{tbStu.channelDetail},getpeo=#{tbStu.getpeo},bas_state=#{tbStu.basState},
+		bas_mark=#{tbStu.basMark},doorday=#{tbStu.doorday},
+		update_time=#{tbStu.updateTime}, update_user=#{tbStu.updateUser} 
+		where id=#{tbStu.id}
+	</update>
+	<update id="updateByJS">
+		update T_BASI_STUDENT set 
+		name=#{tbStu.name},age=#{tbStu.age},phone=#{tbStu.phone},edu=#{tbStu.edu},source=#{tbStu.source},
+		channel=#{tbStu.channel},channel_detail=#{tbStu.channelDetail},getpeo=#{tbStu.getpeo},
+		update_time=#{tbStu.updateTime}, update_user=#{tbStu.updateUser} 
+		where id=#{tbStu.id}
+	</update>
+	
+</mapper>

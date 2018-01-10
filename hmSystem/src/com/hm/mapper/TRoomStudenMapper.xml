@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.TRoomStudenMapper" >
+  <resultMap id="BaseResultMap" type="com.hm.entity.TRoomStuden" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STU_ID" property="stuId" jdbcType="VARCHAR" />
+    <result column="ROOM_ID" property="roomId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, STU_ID, ROOM_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from HMDN.T_ROOM_STUDEN
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from HMDN.T_ROOM_STUDEN
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hm.entity.TRoomStuden" >
+    insert into HMDN.T_ROOM_STUDEN (ID, STU_ID, ROOM_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{stuId,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hm.entity.TRoomStuden" >
+    insert into HMDN.T_ROOM_STUDEN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      STU_ID,
+      ROOM_ID,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      #{stuId,jdbcType=VARCHAR},
+      #{roomId,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hm.entity.TRoomStuden" >
+    update HMDN.T_ROOM_STUDEN
+    <set >
+      <if test="stuId != null" >
+        STU_ID = #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null" >
+        ROOM_ID = #{roomId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hm.entity.TRoomStuden" >
+    update HMDN.T_ROOM_STUDEN
+    set STU_ID = #{stuId,jdbcType=VARCHAR},
+      ROOM_ID = #{roomId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

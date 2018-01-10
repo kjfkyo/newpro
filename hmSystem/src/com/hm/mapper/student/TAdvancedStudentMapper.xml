@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.mapper.student.TAdvancedStudentMapper">
+	<select id="findTAStuByPage" resultType="TAdvancedStudent">
+		select * from t_advanced_student t left join t_clzss_student c on
+		t.id=c.stu_id where 1=1
+		<if test="name!=null">
+			and (t.name LIKE concat(concat('%',#{name}),'%') )
+		</if>
+		<if test="phone!=null">
+			and (t.phone LIKE concat(concat('%',#{phone}),'%') )
+		</if>
+		<choose>
+			<when test="clzId == '0'.toString()"></when>
+			<when test="clzId != null">
+				and (c.clz_id = #{clzId})
+			</when>
+		</choose>
+		<if test="claState!=null">
+			and (t.cla_state LIKE concat(concat('%',#{claState}),'%')
+			)
+		</if>
+		<if test="advState!=null">
+			and (t.adv_state LIKE concat(concat('%',#{advState}),'%')
+			)
+		</if>
+		order by t.create_time desc
+	</select>
+
+	<select id="findByTAStuId" resultType="TAdvancedStudent">
+		select * from
+		T_Advanced_STUDENT where id = #{id}
+	</select>
+
+	<insert id="insert">
+		insert into T_Advanced_STUDENT
+		(id,
+		name,age,phone,edu,source,channel,channel_detail,getpeo,doorday,bas_state,bas_mark,
+		create_time,create_user,cla_state)
+		values
+		(#{taStu.id},#{taStu.name},#{taStu.age},#{taStu.phone},#{taStu.edu},#{taStu.source},
+		#{taStu.channel},#{taStu.channelDetail},#{taStu.getpeo},#{taStu.doorday},#{taStu.basState},
+		#{taStu.basMark},#{taStu.createTime},#{taStu.createUser},#{taStu.claState})
+	</insert>
+
+	<update id="update">
+		update T_Advanced_STUDENT set
+		phone=#{taStu.phone},card=#{taStu.card},sex=#{taStu.sex},nation=#{taStu.nation},place=#{taStu.place},marital=#{taStu.marital},
+		edu_Type=#{taStu.eduType},major=#{taStu.major},school=#{taStu.school},teacher=#{taStu.teacher},
+		office=#{taStu.office},pay_Type=#{taStu.payType},org=#{taStu.org},lxr=#{taStu.lxr},lxr_Phone=#{taStu.lxrPhone},
+		rs=#{taStu.rs},zx=#{taStu.zx},adv_State=#{taStu.advState},adv_Mark=#{taStu.advMark},qq=#{taStu.qq},
+		wechat=#{taStu.wechat},fk_Day=#{taStu.fkDay},qy_Day=#{taStu.qyDay},
+		update_time=#{taStu.updateTime}, update_user=#{taStu.updateUser}
+		where
+		id=#{taStu.id}
+	</update>
+
+	<update id="updateByJS">
+		update T_Advanced_STUDENT set
+		name=#{taStu.name},age=#{taStu.age},
+		phone=#{taStu.phone},edu=#{taStu.edu},source=#{taStu.source},channel=#{taStu.channel},channel_detail=#{taStu.channelDetail},getpeo=#{taStu.getpeo},card=#{taStu.card},sex=#{taStu.sex},nation=#{taStu.nation},place=#{taStu.place},marital=#{taStu.marital},
+		edu_Type=#{taStu.eduType},major=#{taStu.major},school=#{taStu.school},teacher=#{taStu.teacher},
+		office=#{taStu.office},pay_Type=#{taStu.payType},org=#{taStu.org},lxr=#{taStu.lxr},lxr_Phone=#{taStu.lxrPhone},
+		rs=#{taStu.rs},zx=#{taStu.zx},qq=#{taStu.qq},
+		wechat=#{taStu.wechat},fk_Day=#{taStu.fkDay},qy_Day=#{taStu.qyDay},
+		update_time=#{taStu.updateTime}, update_user=#{taStu.updateUser}
+		where
+		id=#{taStu.id}
+	</update>
+
+	<update id="updateClzState">
+		update T_Advanced_STUDENT set cla_state='1' where
+		id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,121 @@
+
+
+
+create table sys_user (
+  id number(19,0),
+  login_name varchar2(64) not null unique,
+  name varchar2(64) not null,
+  password varchar2(255) not null,
+  salt varchar2(64) not null,
+  roles varchar2(255) not null,
+  register_date date not null,
+  primary key (id)
+);
+
+create sequence sys_seq_user start with 1 increment by 1;
+
+insert into sys_user(id,login_name,name,password,salt,roles,register_date) values (SYS_SEQ_USER.NEXTVAL,'admin','超级管理员','691b14d79bf0fa2215f155235df5e670b64394cc','7efbd59d9741d34f','admin',to_date('2012-06-04 01:00:00','yyyy-mm-dd hh24:mi:ss'));
+
+commit;
+
+create table SYS_MENU
+(
+  MENU_ID   VARCHAR2(10) ,
+  MENU_PID  VARCHAR2(10) not null,
+  MENU_NAME VARCHAR2(30) not null,
+  MENU_URL  VARCHAR2(500) not null,
+  MENU_ICON VARCHAR2(30),
+  ORDER_ID  NUMBER(11),
+  primary key (MENU_ID)
+);
+
+create sequence SYS_SEQ_MENU
+minvalue 1
+maxvalue 9999999999999999999999999999
+start with 1
+increment by 1
+cache 20;
+
+
+insert into sys_menu (MENU_ID, MENU_PID, MENU_NAME, MENU_URL, MENU_ICON, ORDER_ID)
+values (concat('M',SYS_SEQ_MENU.NEXTVAL), '0', '首页', '/', '&#xe609;', 0);
+
+insert into sys_menu (MENU_ID, MENU_PID, MENU_NAME, MENU_URL, MENU_ICON, ORDER_ID)
+values (concat('M',SYS_SEQ_MENU.NEXTVAL), '0', '系统管理', '/', '&#xe614;', 2);
+
+insert into sys_menu (MENU_ID, MENU_PID, MENU_NAME, MENU_URL, MENU_ICON, ORDER_ID)
+values (concat('M',SYS_SEQ_MENU.NEXTVAL), '0', '综合查询', '/', '&#xe615;', 1);
+
+insert into sys_menu (MENU_ID, MENU_PID, MENU_NAME, MENU_URL, MENU_ICON, ORDER_ID)
+values (concat('M',SYS_SEQ_MENU.NEXTVAL), 'M2', '用户管理', 'user/list', '', 0);
+
+insert into sys_menu (MENU_ID, MENU_PID, MENU_NAME, MENU_URL, MENU_ICON, ORDER_ID)
+values (concat('M',SYS_SEQ_MENU.NEXTVAL), 'M2', '菜单管理', 'menu/tree', '', 1);
+
+commit;
+
+
+create table USER_LOGIN_LOG
+(
+  SESSION_ID      VARCHAR2(32) not null,
+  USER_LOGIN_NAME VARCHAR2(64) not null,
+  LOGIN_TIME      TIMESTAMP(6) not null,
+   primary key (SESSION_ID)
+);
+
+comment on table USER_LOGIN_LOG
+  is '用户登录日志表';
+comment on column USER_LOGIN_LOG.SESSION_ID
+  is '登录的sessionID';
+comment on column USER_LOGIN_LOG.USER_LOGIN_NAME
+  is '登录用户名';
+comment on column USER_LOGIN_LOG.LOGIN_TIME
+  is '登录时间';
+
+  commit;
+
+  delete from sys_menu where menu_name = '首页';
+  commit;
+
+
+  create table SYS_ROLE_MENU
+  (
+    UUID    VARCHAR2(36) not null,
+    ROLE_ID VARCHAR2(10) not null,
+    MENU_ID VARCHAR2(10) not null,
+     primary key (UUID)
+  );
+
+  comment on table SYS_ROLE_MENU
+    is '角色菜单表';
+  comment on column SYS_ROLE_MENU.UUID
+    is '主键';
+  comment on column SYS_ROLE_MENU.ROLE_ID
+    is '角色ID';
+  comment on column SYS_ROLE_MENU.MENU_ID
+    is '菜单ID';
+
+    create table SYS_ROLE
+    (
+      ID          VARCHAR2(10) not null,
+      NAME        VARCHAR2(30) not null,
+      EXPLAINS    VARCHAR2(200),
+      CREATE_USER VARCHAR2(64),
+      CREATE_TIME TIMESTAMP(6),
+       primary key (ID)
+    );
+create sequence sys_seq_role start with 1 increment by 1;
+    comment on table SYS_ROLE
+      is '角色表';
+    comment on column SYS_ROLE.ID
+      is '主键';
+    comment on column SYS_ROLE.NAME
+      is '角色名称';
+    comment on column SYS_ROLE.EXPLAINS
+      is '说明';
+    comment on column SYS_ROLE.CREATE_USER
+      is '创建人';
+    comment on column SYS_ROLE.CREATE_TIME
+      is '创建时间';
+
+      commit;

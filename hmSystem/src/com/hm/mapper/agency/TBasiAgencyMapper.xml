@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.agency.TBasiAgencyMapper" >
+  <resultMap id="BaseResultMap" type="com.hm.entity.agency.TBasiAgency" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="GSMC" property="gsmc" jdbcType="VARCHAR" />
+    <result column="YWLX" property="ywlx" jdbcType="VARCHAR" />
+    <result column="GM" property="gm" jdbcType="VARCHAR" />
+    <result column="FD" property="fd" jdbcType="VARCHAR" />
+    <result column="WHR" property="whr" jdbcType="VARCHAR" />
+    <result column="ZT" property="zt" jdbcType="VARCHAR" />
+    <result column="MARK" property="mark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, "NAME", PHONE, GSMC, YWLX, GM, FD, WHR, ZT, MARK, CREATE_TIME, CREATE_USER, UPDATE_TIME, 
+    UPDATE_USER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from HMDN.T_BASI_AGENCY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from HMDN.T_BASI_AGENCY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hm.entity.agency.TBasiAgency" >
+    insert into HMDN.T_BASI_AGENCY (ID, "NAME", PHONE, 
+      GSMC, YWLX, GM, FD, 
+      WHR, ZT, MARK, CREATE_TIME, 
+      CREATE_USER, UPDATE_TIME, UPDATE_USER
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{gsmc,jdbcType=VARCHAR}, #{ywlx,jdbcType=VARCHAR}, #{gm,jdbcType=VARCHAR}, #{fd,jdbcType=VARCHAR}, 
+      #{whr,jdbcType=VARCHAR}, #{zt,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, #{updateUser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hm.entity.agency.TBasiAgency" >
+    insert into HMDN.T_BASI_AGENCY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      "NAME",
+      PHONE,
+      GSMC,
+      YWLX,
+      GM,
+      FD,
+      WHR,
+      ZT,
+      MARK,
+      CREATE_TIME,
+      CREATE_USER,
+      UPDATE_TIME,
+      UPDATE_USER,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR},
+      #{gsmc,jdbcType=VARCHAR},
+      #{ywlx,jdbcType=VARCHAR},
+      #{gm,jdbcType=VARCHAR},
+      #{fd,jdbcType=VARCHAR},
+      #{whr,jdbcType=VARCHAR},
+      #{zt,jdbcType=VARCHAR},
+      #{mark,jdbcType=VARCHAR},
+      #{createTime,jdbcType=DATE},
+      #{createUser,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=DATE},
+      #{updateUser,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hm.entity.agency.TBasiAgency" >
+    update HMDN.T_BASI_AGENCY
+    <set >
+      <if test="name != null" >
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gsmc != null" >
+        GSMC = #{gsmc,jdbcType=VARCHAR},
+      </if>
+      <if test="ywlx != null" >
+        YWLX = #{ywlx,jdbcType=VARCHAR},
+      </if>
+      <if test="gm != null" >
+        GM = #{gm,jdbcType=VARCHAR},
+      </if>
+      <if test="fd != null" >
+        FD = #{fd,jdbcType=VARCHAR},
+      </if>
+      <if test="whr != null" >
+        WHR = #{whr,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        ZT = #{zt,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        MARK = #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hm.entity.agency.TBasiAgency" >
+    update HMDN.T_BASI_AGENCY
+    set "NAME" = #{name,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      GSMC = #{gsmc,jdbcType=VARCHAR},
+      YWLX = #{ywlx,jdbcType=VARCHAR},
+      GM = #{gm,jdbcType=VARCHAR},
+      FD = #{fd,jdbcType=VARCHAR},
+      WHR = #{whr,jdbcType=VARCHAR},
+      ZT = #{zt,jdbcType=VARCHAR},
+      MARK = #{mark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- ==========================================自定义SQL========================================== -->
+  <select id="selectList" resultType="com.hm.entity.agency.TBasiAgency" parameterType="java.lang.String" >
+    select 
+    	id,name,phone,gsmc,ywlx,fd,whr,zt
+    from T_BASI_AGENCY
+    where 1=1
+    <if test="name!=null">
+        and name LIKE concat(concat('%',#{name}),'%')
+    </if>
+  </select>
+  
+  <insert id="save" parameterType="com.hm.entity.agency.TBasiAgency" >
+    insert into T_BASI_AGENCY (ID, NAME, PHONE, 
+      GSMC, YWLX, GM, FD, 
+      WHR, ZT, MARK, CREATE_TIME, 
+      CREATE_USER
+      )
+    values (sys_guid(), #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{gsmc,jdbcType=VARCHAR}, #{ywlx,jdbcType=VARCHAR}, #{gm,jdbcType=VARCHAR}, #{fd,jdbcType=VARCHAR}, 
+      #{whr,jdbcType=VARCHAR}, #{zt,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR}, sysdate, 
+      #{createUser,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <select id="checkName" resultType="int">
+        select count(id) from
+        T_BASI_AGENCY
+        where
+        name = #{name,jdbcType=VARCHAR}
+        <if test="id != null">
+            and id != #{id,jdbcType=VARCHAR}
+        </if>
+  </select>
+  
+  <select id="selectById" resultType="com.hm.entity.agency.TBasiAgency"
+  			 parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BASI_AGENCY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="update" parameterType="com.hm.entity.agency.TBasiAgency" >
+    update T_BASI_AGENCY
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gsmc != null" >
+        GSMC = #{gsmc,jdbcType=VARCHAR},
+      </if>
+      <if test="ywlx != null" >
+        YWLX = #{ywlx,jdbcType=VARCHAR},
+      </if>
+      <if test="gm != null" >
+        GM = #{gm,jdbcType=VARCHAR},
+      </if>
+      <if test="fd != null" >
+        FD = #{fd,jdbcType=VARCHAR},
+      </if>
+      <if test="whr != null" >
+        WHR = #{whr,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        ZT = #{zt,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        MARK = #{mark,jdbcType=VARCHAR},
+      </if>
+        UPDATE_TIME = sysdate,
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

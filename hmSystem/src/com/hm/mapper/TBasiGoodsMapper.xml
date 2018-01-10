@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.TBasiGoodsMapper" >
+	<!-- 添加一个资产类型 -->
+  <insert id="insertTBasiCode">
+  	insert into t_basi_code values(sys_guid(),null,#{code.kind},#{code.name},
+null,null,null,#{code.delflag},null,null,null,
+#{code.createTime},#{code.createUser},#{code.updateTime},#{code.updateUser})
+  </insert>
+  <select id="selectTBasiCodeAlls" resultType="com.hm.entity.TBasiCode">
+  	select * from t_basi_code where delflag = '0' and kind='god' order by create_time desc
+  </select>
+  <!-- 分页查询所有的资产类型（分页） -->
+  <select id="selectTBasiCodeAll" resultType="com.hm.entity.TBasiCode">
+  	select * from t_basi_code where delflag = '0' and kind='god'
+        <if test="keyword!=null">
+            and (name LIKE concat(concat('%',#{keyword}),'%') or name LIKE concat(concat('%',#{keyword}),'%') or
+            roles LIKE
+            concat(concat('%',#{keyword}),'%'))
+        </if>
+        order by create_time desc
+  </select>
+  <!-- 添加一个物资 -->
+  <insert id="insertTBasiGoods">
+  	insert into T_BASI_GOODS values(sys_guid(),#{goods.name},#{goods.type},
+null,'当前物资空闲，未被使用',#{goods.state},#{goods.createTime},
+#{goods.createUser},#{goods.updateTime},#{goods.updateUser})
+  </insert>
+  <!-- 删除一个物资之前查看是否被使用(参数：物资ID，返回值：使用人ID) -->
+  <select id="selectTBasiGoodsu_Id" resultType="String">
+  	select user_id from T_BASI_GOODS where id=#{id}
+  </select>
+  <!-- 假删除资产 -->
+  <delete id="deleteTBasiGoods">
+  	delete from T_BASI_GOODS where id=#{id}
+  </delete>
+  <!-- 删除资产类型之前通过资产类型name查询该资产类型的id -->
+  <select id="selectTBasiCodeByName" resultType="String">
+  	select id from T_BASI_code where name=#{name} and kind='god'
+  </select>
+  <!-- 删除一个资产类型(假删除，修改了delflag字段的状态值) -->
+  <delete id="deleteTBasiCode">
+  	delete from t_basi_code where id=#{id}
+  </delete>
+  <!-- 删除一个资产类型之后根据资产类型的name字段删除所有的资产 -->  
+  <delete id="deleteTBasiCodeAndGoods">
+  	delete from T_BASI_GOODS where type=#{type}
+  </delete>
+  <!-- 添加一个资产类型之前查询数据库中是否有该物资类型 -->
+  <select id="selectTBasiCodeByNameIsNull" resultType="Integer">
+  	select count(*) from t_basi_code where name=#{name}
+  </select>
+  <!-- 添加一个资产之前查询数据库中是否有该物资 -->
+  <select id="selectTBasiGoodsByNameIsNull" resultType="Integer">
+  	select count(*) from t_basi_goods where name=#{name}
+  </select>
+  <!-- 修改物资名称(修改名称的同时修改了最后修改人和最后修改时间) -->
+  <update id="updateTBasiGoods">
+  	update T_BASI_GOODS set name=#{goods.name},update_time=#{goods.updateTime},
+  	update_user=#{goods.updateUser} where id=#{goods.id}
+  </update>
+  <!-- 修改物资状态 -->
+  <update id="updateGoodsCodeState">
+  	update T_BASI_GOODS set user_id=#{goods.userId},state=#{goods.state},mark=#{goods.mark},update_time=#{goods.updateTime},
+  	update_user=#{goods.updateUser} where id=#{goods.id}
+  </update>
+  <!-- 修改物资类型名称(修改名称的同时修改了最后修改人和最后修改时间) -->
+  <update id="updateTBasiCode">
+  	update T_BASI_CODE set name=#{code.name},
+  	update_time=#{code.updateTime},update_user=#{code.updateUser} 
+  	where id=#{code.id} and kind='god'
+  </update>
+  <!-- 修改物资类型名称之后将该物资类型下所有的物资的类型名称都同时修改 -->
+  <update id="updateTBasiGoodsByTypeName">
+  	update T_BASI_GOODS set type=#{newName} where type=#{oldName}
+  </update>
+  <!-- 查询某个物资类型下所有的物资 -->
+  <select id="selectTBasiGoodsByType" resultType="com.hm.entity.TBasiGoods">
+  	select * from T_BASI_GOODS where state!='已删除' and type=#{type}
+        <if test="keyword!=null">
+            and (name LIKE concat(concat('%',#{keyword}),'%') or name LIKE concat(concat('%',#{keyword}),'%') or
+            roles LIKE
+            concat(concat('%',#{keyword}),'%'))
+        </if>
+        order by create_time desc
+  </select>
+  <!-- 根据物资类型名称查询该类型物资数量总和 -->
+  <select id="selectTBasiGoodsCount" resultType="Integer">
+  	select count(*) from T_BASI_GOODS where type=#{type} and state!='已删除'
+  </select>
+  <!-- 根据物资类型名称查询该类型物资有多少是空闲的物资的数量 -->
+  <select id="selectTBasiGoodsIsNull" resultType="Integer">
+  	select count(*) from T_BASI_GOODS where type=#{type} and state!='已删除' and state='空闲'
+  </select>
+  
+  <select id="selectTBasiGoodsIsXXX" resultType="Integer">
+  	select count(*) from T_BASI_GOODS where type=#{type} and state!='已删除' and state='损坏'
+  </select>
+  
+  <select id="selectTBasiGoodsIsDonk" resultType="Integer">
+  	select count(*) from T_BASI_GOODS where type=#{type} and state!='已删除' and state='丢失'
+  </select>
+  
+  <select id="selectTBasiGoodsIsUse" resultType="Integer">
+  	select count(*) from T_BASI_GOODS where type=#{type} and state!='已删除' and state='使用'
+  </select>
+  
+  <select id="selectTBasiCodeById" resultType="com.hm.entity.TBasiCode">
+  	select * from T_BASI_CODE where id=#{id}
+  </select>
+  <select id="selectTBasiGoodsById" resultType="com.hm.entity.TBasiGoods">
+  	select * from T_BASI_GOODS where id=#{id}
+  </select>
+</mapper>

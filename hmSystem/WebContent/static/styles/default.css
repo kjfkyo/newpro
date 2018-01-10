@@ -1,0 +1,17 @@
+.layui-laypage input {
+    margin: -2px 5px 0 0;
+}
+
+.tpl-form-line-small-titl {
+    color: red;
+}
+
+.am-custom-search {
+    float: left;
+    margin-right: 10px;
+    line-height: 33px;
+}
+
+.layui-laypage span {
+    color: black;
+}

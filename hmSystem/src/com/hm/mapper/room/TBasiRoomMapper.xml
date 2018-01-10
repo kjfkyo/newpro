@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.room.TBasiRoomMapper" >
+  <resultMap id="BaseResultMap" type="com.hm.entity.room.TBasiRoom" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ADDR" property="addr" jdbcType="VARCHAR" />
+    <result column="FD" property="fd" jdbcType="VARCHAR" />
+    <result column="FD_PHONE" property="fdPhone" jdbcType="VARCHAR" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="START_DATE" property="startDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="COUNT_STU" property="countStu" jdbcType="DECIMAL" />
+    <result column="MARK" property="mark" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="DELFLAG" property="delflag" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, "NAME", ADDR, FD, FD_PHONE, MONEY, START_DATE, END_DATE, COUNT_STU, MARK, CREATE_TIME, 
+    CREATE_USER, UPDATE_TIME, UPDATE_USER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from HMDN.T_BASI_ROOM
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from HMDN.T_BASI_ROOM
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hm.entity.room.TBasiRoom" >
+    insert into HMDN.T_BASI_ROOM (ID, "NAME", ADDR, 
+      FD, FD_PHONE, MONEY, 
+      START_DATE, END_DATE, COUNT_STU, 
+      MARK, CREATE_TIME, CREATE_USER, 
+      UPDATE_TIME, UPDATE_USER)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, 
+      #{fd,jdbcType=VARCHAR}, #{fdPhone,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{startDate,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{countStu,jdbcType=DECIMAL}, 
+      #{mark,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=DATE}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hm.entity.room.TBasiRoom" >
+    insert into HMDN.T_BASI_ROOM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      "NAME",
+      ADDR,
+      FD,
+      FD_PHONE,
+      MONEY,
+      START_DATE,
+      END_DATE,
+      COUNT_STU,
+      MARK,
+      CREATE_TIME,
+      CREATE_USER,
+      UPDATE_TIME,
+      UPDATE_USER,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{addr,jdbcType=VARCHAR},
+      #{fd,jdbcType=VARCHAR},
+      #{fdPhone,jdbcType=VARCHAR},
+      #{money,jdbcType=DECIMAL},
+      #{startDate,jdbcType=VARCHAR},
+      #{endDate,jdbcType=VARCHAR},
+      #{countStu,jdbcType=DECIMAL},
+      #{mark,jdbcType=VARCHAR},
+      #{createTime,jdbcType=DATE},
+      #{createUser,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=DATE},
+      #{updateUser,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hm.entity.room.TBasiRoom" >
+    update HMDN.T_BASI_ROOM
+    <set >
+      <if test="name != null" >
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="fd != null" >
+        FD = #{fd,jdbcType=VARCHAR},
+      </if>
+      <if test="fdPhone != null" >
+        FD_PHONE = #{fdPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="countStu != null" >
+        COUNT_STU = #{countStu,jdbcType=DECIMAL},
+      </if>
+      <if test="mark != null" >
+        MARK = #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hm.entity.room.TBasiRoom" >
+    update HMDN.T_BASI_ROOM
+    set "NAME" = #{name,jdbcType=VARCHAR},
+      ADDR = #{addr,jdbcType=VARCHAR},
+      FD = #{fd,jdbcType=VARCHAR},
+      FD_PHONE = #{fdPhone,jdbcType=VARCHAR},
+      MONEY = #{money,jdbcType=DECIMAL},
+      START_DATE = #{startDate,jdbcType=VARCHAR},
+      END_DATE = #{endDate,jdbcType=VARCHAR},
+      COUNT_STU = #{countStu,jdbcType=DECIMAL},
+      MARK = #{mark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- ====================================自定义======================================== -->
+  <!-- 查询 -->
+  <select id="selectList" resultType="TBasiRoom">
+  	 select id,name,addr,fd,fd_phone,money,end_date from t_basi_room 
+  	 where delflag = '0'
+  	 order by create_time desc
+  </select>
+  <!-- 添加 -->
+  <insert id="saveRoom" parameterType="com.hm.entity.room.TBasiRoom" >
+    insert into T_BASI_ROOM (ID, NAME, ADDR, 
+      FD, FD_PHONE, MONEY, 
+      START_DATE, END_DATE, COUNT_STU, 
+      MARK,DELFLAG, CREATE_TIME, CREATE_USER, 
+      UPDATE_TIME, UPDATE_USER)
+    values (sys_guid(), #{name,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, 
+      #{fd,jdbcType=VARCHAR}, #{fdPhone,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{startDate,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{countStu,jdbcType=INTEGER}, 
+      #{mark,jdbcType=VARCHAR},'0', sysdate, #{createUser,jdbcType=VARCHAR}, 
+      sysdate, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <!-- 查询同名个数 -->
+  <select id="checkName" resultType="int">
+        select count(id) from
+        T_BASI_ROOM
+        where
+        name = #{name,jdbcType=VARCHAR}
+        <if test="id != null">
+            and id != #{id,jdbcType=VARCHAR}
+        </if>
+  </select>
+  <!-- 根据id查询宿舍信息 -->
+  <select id="selectRoomById" resultType="com.hm.entity.room.TBasiRoom" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BASI_ROOM
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <!-- 修改宿舍信息 -->
+  <update id="updateRoom" parameterType="com.hm.entity.room.TBasiRoom" >
+    update T_BASI_ROOM
+    <set >
+      <if test="name != null" >
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="fd != null" >
+        FD = #{fd,jdbcType=VARCHAR},
+      </if>
+      <if test="fdPhone != null" >
+        FD_PHONE = #{fdPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="countStu != null" >
+        COUNT_STU = #{countStu,jdbcType=DECIMAL},
+      </if>
+      <if test="mark != null" >
+        MARK = #{mark,jdbcType=VARCHAR},
+      </if>
+        UPDATE_TIME = sysdate,
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除宿舍 -->
+  <update id="deleteRoom" parameterType="java.lang.String" >
+    update T_BASI_ROOM
+    set  DELFLAG = '1'
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteRoomStu" parameterType="java.lang.String" >
+  	delete from T_ROOM_STUDEN
+  	where ROOM_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 根据宿舍id查询学员 -->
+  <select id="selecStutList" resultType="java.util.Map">
+  	 select s.id id,
+  	 		s.name name,
+	       s.phone phone,
+	       s.lxr lxr,
+	       s.lxr_phone lxrPhone,
+	       bc.name clzssName
+	  from t_room_studen r
+	  left join t_end_student s on r.stu_id = s.id
+	  left join t_clzss_student c on c.stu_id = s.id and c.state = '1'
+	  left join t_basi_clzss bc on bc.id = c.clz_id
+	  where r.room_id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据姓名或项目组查询学员 -->
+  <select id="selectStuList" resultType="java.util.Map">
+		select t.id id,
+  	 		t.name name,
+	       	t.phone phone,
+	       	t.lxr lxr,
+	       	t.lxr_phone lxrPhone,
+	       	c.name clzssName
+	    from T_END_STUDENT t left join t_clzss_student sc on t.id=sc.stu_id
+	    left join t_basi_clzss c on c.id = sc.clz_id
+	    where 1=1
+        <if test="name!=null">
+            and (t.name LIKE concat(concat('%',#{name}),'%') )
+        </if>
+        <if test="clzId!=null">
+            and (sc.clz_id LIKE concat(concat('%',#{clzId}),'%') )
+        </if>
+        <!-- <choose>
+        	<when test="clzId = '0'"></when>
+        	<when test="clzId != null">
+        		and (sc.clz_id LIKE concat(concat('%',#{clzId}),'%') )
+        	</when>
+        </choose> -->
+        and not exists (select 1 from t_room_studen rs where t.id = rs.stu_id)
+        order by t.create_time desc
+	</select>
+  	
+  	<!-- 查询有空余床位的宿舍 -->
+  	<select id="selectFreeRoom" resultType="java.util.Map">
+  		select r.id id, r.name name
+		from T_BASI_ROOM r
+		where delflag = '0'
+		   	and count_stu >
+		       (select count(1) from T_ROOM_STUDEN s where s.room_id = r.id)
+  	</select>
+  	<!-- 根据学员删除住宿信息 -->
+  	<delete id="deleteByStu" parameterType="java.lang.String" >
+	    delete from t_room_studen
+	    where stu_id = #{stuId,jdbcType=VARCHAR}
+	</delete>
+	<!-- 添加学员住宿信息 -->
+	<insert id="insertRoomStu">
+	    insert into T_ROOM_STUDEN (ID, STU_ID, ROOM_ID)
+	    values (sys_guid(), #{stuId,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR})
+    </insert>
+</mapper>

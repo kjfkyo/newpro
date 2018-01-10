@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.mapper.student.TEndStudentMapper" >
+	<insert id="insert">
+		insert into T_END_STUDENT
+		(id, name,age,phone,edu,source,channel,channel_detail,getpeo,doorday,bas_state,bas_mark,
+		create_time,create_user,card,sex,nation,place,marital,edu_Type,major,school,teacher,office,pay_Type,
+		org,lxr,lxr_Phone,rs,zx,adv_State,adv_Mark,qq,wechat,fk_Day,qy_Day,cla_state,end_state) 
+		values 
+		(#{teStu.id},#{teStu.name},#{teStu.age},#{teStu.phone},#{teStu.edu},#{teStu.source},
+		#{teStu.channel},#{teStu.channelDetail},#{teStu.getpeo},#{teStu.doorday},#{teStu.basState},
+		#{teStu.basMark},#{teStu.createTime},#{teStu.createUser},#{teStu.card},#{teStu.sex},#{teStu.nation},
+		#{teStu.place},#{teStu.marital},#{teStu.eduType},#{teStu.major},#{teStu.school},#{teStu.teacher},
+		#{teStu.office},#{teStu.payType},#{teStu.org},#{teStu.lxr},#{teStu.lxrPhone},#{teStu.rs},#{teStu.zx},
+		#{teStu.advState},#{teStu.advMark},#{teStu.qq},#{teStu.wechat},#{teStu.fkDay},#{teStu.qyDay},#{teStu.claState},#{teStu.endState})
+	</insert>
+	
+	<update id="updateJS">
+		update T_END_STUDENT set update_time=#{updateTime},update_user=#{updateUser},end_state=#{endState}
+		where id=#{id}
+	</update>
+	
+	<update id="updateQH">
+		update T_END_STUDENT set update_time=#{updateTime},update_user=#{updateUser},
+		jydw=#{jydw},jyxz=#{jyxz},jyrq=#{jyrq},tjr=#{tjr},phone=#{phone},end_state=#{endState}
+		where id=#{id}
+	</update>
+	
+	<select id="findByTEId" resultType="TEndStudent">
+		select * from T_END_STUDENT where id=#{id}
+	</select>
+	
+	<select id="findTEStuByPageJS" resultType="TEndStudent">
+		select * from T_END_STUDENT t left join t_clzss_student c on t.id=c.stu_id where 1=1
+        <if test="name!=null">
+            and (t.name LIKE concat(concat('%',#{name}),'%') )
+        </if>
+        <if test="phone!=null">
+            and (t.phone LIKE concat(concat('%',#{phone}),'%') )
+        </if>
+        <choose>
+        	<when test="clzId == '0'.toString()"></when>
+        	<when test="clzId != null">
+        		and (c.clz_id LIKE concat(concat('%',#{clzId}),'%') )
+        	</when>
+        </choose>
+        <if test="claState!=null">
+            and (t.cla_state LIKE concat(concat('%',#{claState}),'%') )
+        </if>
+        <if test="endState!=null">
+            and (t.end_state LIKE concat(concat('%',#{endState}),'%') )
+        </if>
+        order by t.create_time desc
+	</select>
+	
+	<select id="findTEStuByPageQH" resultType="TEndStudent">
+		select * from T_END_STUDENT t left join t_clzss_student c on t.id=c.stu_id where (end_state = #{state1} or end_state = #{state2})
+        <if test="name!=null">
+            and (t.name LIKE concat(concat('%',#{name}),'%') )
+        </if>
+        <if test="phone!=null">
+            and (t.phone LIKE concat(concat('%',#{phone}),'%') )
+        </if>
+        <if test="clzId!=null">
+            and (c.clz_id LIKE concat(concat('%',#{clzId}),'%') )
+        </if>
+        <if test="endState!=null">
+            and (t.end_state = #{endState})
+        </if>
+        order by t.create_time desc
+	</select>
+	
+	<update id="updateClzState">
+		update T_END_STUDENT set cla_state='1' where id=#{id}
+	</update>
+	<update id="updateByJS">
+		update T_END_STUDENT set name=#{teStu.name},age=#{teStu.age},
+		phone=#{teStu.phone},edu=#{teStu.edu},source=#{teStu.source},channel=#{teStu.channel},channel_detail=#{teStu.channelDetail},getpeo=#{teStu.getpeo},card=#{teStu.card},sex=#{teStu.sex},nation=#{teStu.nation},place=#{teStu.place},marital=#{teStu.marital},
+		edu_Type=#{teStu.eduType},major=#{teStu.major},school=#{teStu.school},teacher=#{teStu.teacher},
+		office=#{teStu.office},pay_Type=#{teStu.payType},org=#{teStu.org},lxr=#{teStu.lxr},lxr_Phone=#{teStu.lxrPhone},
+		rs=#{teStu.rs},zx=#{teStu.zx},qq=#{teStu.qq},
+		wechat=#{teStu.wechat},fk_Day=#{teStu.fkDay},qy_Day=#{teStu.qyDay},
+		update_time=#{teStu.updateTime}, update_user=#{teStu.updateUser} where id=#{teStu.id}
+	</update>
+	<select id="getClzss" resultType="java.util.Map">
+  		select id,name from t_basi_clzss order by create_time desc
+  	</select>
+</mapper>
+
+
+
+
+
+

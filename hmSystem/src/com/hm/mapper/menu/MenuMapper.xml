@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.mapper.menu.MenuMapper">
+
+    <select id="findMenuByPid" resultType="Menu">
+		select * from sys_menu where menu_pid = #{pid} and delflag = '0' order by order_id asc
+	</select>
+
+    <select id="findMenuById" resultType="Menu">
+		select u.*,(SELECT s.menu_name FROM sys_menu s WHERE s.menu_id = u.menu_pid) parentName from sys_menu u where u.menu_id = #{menuId} and u.delflag='0'
+	</select>
+
+    <insert id="insert">
+		insert into sys_menu (menu_id, menu_pid, menu_name, menu_url, menu_icon, order_id, create_time, create_user, delflag)
+                                   values
+        (concat('M',SYS_SEQ_USER.NEXTVAL), #{menu.menuPid}, #{menu.menuName}, #{menu.menuUrl}, #{menu.menuIcon}, #{menu.orderId}, #{menu.createTime}, #{menu.createUser}, #{menu.delflag})
+
+    </insert>
+
+    <update id="update">
+        update sys_menu set menu_name = #{menu.menuName},
+                            menu_url = #{menu.menuUrl},
+                            menu_icon = #{menu.menuIcon},
+                            order_id = #{menu.orderId},
+                            update_time = #{menu.updateTime},
+                            update_user = #{menu.updateUser}
+        where menu_id = #{menu.menuId}
+    </update>
+
+	<update id="falseDelete">
+		update sys_menu set delflag = #{menu.delflag},
+							update_time = #{menu.updateTime},
+                            update_user = #{menu.updateUser}
+		where menu_id = #{menu.menuId}
+	</update>
+	
+    <delete id="delete">
+        delete from sys_menu where menu_id = #{menuId} or menu_pid = #{menuId}
+    </delete>
+
+    <delete id="deleteRoleMenuByMenuId">
+        delete from sys_role_menu where menu_id = #{menuId}
+    </delete>
+
+    <select id="findAllMenus" resultType="Menu">
+        select * from sys_menu where delflag = '0'
+    </select>
+</mapper>

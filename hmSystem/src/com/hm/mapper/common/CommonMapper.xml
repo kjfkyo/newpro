@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.common.CommonMapper" >
+  <!-- 根据类型查询code表 -->
+  <select id="selectCodeByType" parameterType="java.lang.String" resultType="java.util.Map">
+  	 select id,name,name nm from T_BASI_CODE where delflag = '0'
+  	 and kind = #{type,jdbcType=VARCHAR}
+  	 order by create_time desc
+  </select>
+  <!-- 查询任意一张表 -->
+  <select id="selectCodeByTable" parameterType="java.lang.String" resultType="java.util.Map">
+  
+  	 select id,name,name nm from ${tName} where 1 = 1
+  	 <if test="filter!=null">
+	  	 <![CDATA[
+	            and ${filter}
+	     ]]>
+    </if>
+     
+  </select>
+  <!-- 根据code表中的kind查找name字段值 -->
+  <select id="selectCodeByKind" parameterType="java.lang.String" resultType="String">
+  	 select name from T_BASI_CODE where kind=#{kind}
+  </select>
+  
+  <!-- 根据角色查询用户 -->
+  <select id="selectUser" parameterType="java.lang.String" resultType="java.util.Map">
+  	 select id,name,name nm from sys_user where delflag = '0'
+  	 <if test="role != null" >
+  	 	and roles = #{role,jdbcType=VARCHAR}
+  	 </if>
+  	 order by create_time
+  </select>
+  
+  
+</mapper>

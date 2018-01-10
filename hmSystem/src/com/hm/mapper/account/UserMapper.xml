@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hm.mapper.account.UserMapper">
+
+    <select id="getAllUser" resultType="User">
+		select * from sys_user where delflag = '0' and roles != 'admin'
+	</select>
+	<select id="findAllUser" resultType="User">
+		select id,name from sys_user where delflag = '0' and roles='R6'
+	</select>
+	
+
+    <select id="getUserById" resultType="User">
+		select * from sys_user
+		where
+		id = #{id} and delflag = '0'
+	</select>
+
+    <select id="findUserByPage" resultType="User">
+        select * from sys_user where delflag = '0' and roles != 'admin'
+
+        <if test="keyword!=null">
+            and (login_name LIKE concat(concat('%',#{keyword}),'%') or name LIKE concat(concat('%',#{keyword}),'%') or
+            roles LIKE
+            concat(concat('%',#{keyword}),'%'))
+        </if>
+
+        order by create_time desc
+    </select>
+
+    <select id="findUserByLoginName" resultType="User">
+		select * from
+		sys_user
+		where
+		login_name = #{loginName} and delflag = '0'
+	</select>
+
+    <insert id="save">
+		insert into sys_user(id,login_name,name,password,salt,roles,create_time,create_user,delflag) values (SYS_SEQ_USER.NEXTVAL,#{user.loginName},#{user.name},#{user.password},#{user.salt},#{user.roles},#{user.createTime},#{user.createUser},#{user.delflag})
+    </insert>
+
+    <select id="countUserByLoginName" resultType="int">
+        select count(id) from
+        sys_user
+        where
+        login_name = #{loginName}
+        <if test="id != null">
+            and id != #{id}
+        </if>
+    </select>
+
+    <update id="update">
+        update sys_user set login_name=#{user.loginName}, name=#{user.name}, password=#{user.password}, roles=#{user.roles},update_time=#{user.updateTime}, update_user=#{user.updateUser} where id = #{user.id}
+    </update>
+    <update id="updatePassword">
+        update sys_user set  password=#{user.password},salt=#{user.salt},update_time=#{user.updateTime}, update_user=#{user.updateUser} where id = #{user.id}
+    </update>
+    <update id="falseDelete">
+    	update sys_user set delflag = #{user.delflag}, update_time=#{user.updateTime}, update_user=#{user.updateUser} where id = #{user.id}
+    </update>
+
+    <delete id="delete">
+        delete from sys_user where id = #{id}
+    </delete>
+    <insert id="insertUser">
+        insert into sys_user values(SYS_SEQ_USER.NEXTVAL,
+        #{user.loginName},#{user.name},#{user.password},
+        #{user.salt},#{user.roles},#{user.department},#{user.grade},
+        #{user.position},#{user.email},#{user.phone},#{user.sex},
+        #{user.birthday},#{user.card},#{user.place},#{user.education},
+        #{user.office},#{user.status},#{user.delflag},#{user.mark},
+        #{user.createTime},#{user.createUser},
+        #{user.updateTime},
+        #{user.updateUser})
+    </insert>
+    
+    <update id="updateUserInfo">
+        update sys_user set login_name=#{user.loginName},name=#{user.name},roles=#{user.roles},
+        department=#{user.department},grade=#{user.grade},
+        position=#{user.position},email=#{user.email},phone=#{user.phone},
+        sex=#{user.sex},birthday=#{user.birthday},card=#{user.card},
+        place=#{user.place},education=#{user.education},
+        office=#{user.office},status=#{user.status},
+        mark=#{user.mark},create_time=#{user.createTime},create_user=#{user.createUser},
+        update_time=#{user.updateTime},update_user=#{user.updateUser},
+        delflag=#{user.delflag}
+        where id=#{user.id}
+    </update>
+    <select id="selectUserInfo" resultType="User">
+    	select * from sys_user where id=#{id}
+    </select>
+    
+    <select id="selectUserByDep" resultType="String">
+    	select name from sys_user where delflag='0' and department=#{dep} 
+    </select>
+</mapper>

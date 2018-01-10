@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.TBasiRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.hm.entity.TBasiRecord" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STU_ID" property="stuId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="MS_DATE" property="msDate" jdbcType="VARCHAR" />
+    <result column="DLR" property="dlr" jdbcType="VARCHAR" />
+    <result column="ZW" property="zw" jdbcType="VARCHAR" />
+    <result column="JG" property="jg" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, STU_ID, "NAME", MS_DATE, DLR, ZW, JG, CREATE_TIME, CREATE_USER, UPDATE_TIME, 
+    UPDATE_USER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from HMDN.T_BASI_RECORD
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from HMDN.T_BASI_RECORD
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hm.entity.TBasiRecord" >
+    insert into HMDN.T_BASI_RECORD (ID, STU_ID, "NAME", 
+      MS_DATE, DLR, ZW, JG, 
+      CREATE_TIME, CREATE_USER, UPDATE_TIME, 
+      UPDATE_USER)
+    values (#{id,jdbcType=VARCHAR}, #{stuId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{msDate,jdbcType=VARCHAR}, #{dlr,jdbcType=VARCHAR}, #{zw,jdbcType=VARCHAR}, #{jg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=DATE}, 
+      #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hm.entity.TBasiRecord" >
+    insert into HMDN.T_BASI_RECORD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      STU_ID,
+      "NAME",
+      MS_DATE,
+      DLR,
+      ZW,
+      JG,
+      CREATE_TIME,
+      CREATE_USER,
+      UPDATE_TIME,
+      UPDATE_USER,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      #{stuId,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{msDate,jdbcType=VARCHAR},
+      #{dlr,jdbcType=VARCHAR},
+      #{zw,jdbcType=VARCHAR},
+      #{jg,jdbcType=VARCHAR},
+      #{createTime,jdbcType=DATE},
+      #{createUser,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=DATE},
+      #{updateUser,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hm.entity.TBasiRecord" >
+    update HMDN.T_BASI_RECORD
+    <set >
+      <if test="stuId != null" >
+        STU_ID = #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="msDate != null" >
+        MS_DATE = #{msDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dlr != null" >
+        DLR = #{dlr,jdbcType=VARCHAR},
+      </if>
+      <if test="zw != null" >
+        ZW = #{zw,jdbcType=VARCHAR},
+      </if>
+      <if test="jg != null" >
+        JG = #{jg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUser != null" >
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null" >
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hm.entity.TBasiRecord" >
+    update HMDN.T_BASI_RECORD
+    set STU_ID = #{stuId,jdbcType=VARCHAR},
+      "NAME" = #{name,jdbcType=VARCHAR},
+      MS_DATE = #{msDate,jdbcType=VARCHAR},
+      DLR = #{dlr,jdbcType=VARCHAR},
+      ZW = #{zw,jdbcType=VARCHAR},
+      JG = #{jg,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=DATE},
+      UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.hm.mapper.salary.TStuSalaryMapper">
+	<resultMap id="BaseResultMap" type="com.hm.entity.salary.TStuSalary">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="STU_ID" property="stuId" jdbcType="VARCHAR" />
+		<result column="BANK_NM" property="bankNm" jdbcType="VARCHAR" />
+		<result column="BANK_NUM" property="bankNum" jdbcType="VARCHAR" />
+		<result column="SAL_MONEY" property="salMoney" jdbcType="DECIMAL" />
+		<result column="FF_DATE" property="ffDate" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+		<result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, STU_ID, BANK_NM, BANK_NUM, SAL_MONEY, FF_DATE, "STATE", CREATE_TIME,
+		CREATE_USER,
+		UPDATE_TIME, UPDATE_USER
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from HMDN.T_STU_SALARY
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from HMDN.T_STU_SALARY
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.hm.entity.salary.TStuSalary">
+		insert into HMDN.T_STU_SALARY (ID, STU_ID, BANK_NM,
+		BANK_NUM, SAL_MONEY, FF_DATE,
+		STATE, CREATE_TIME, CREATE_USER,
+		UPDATE_TIME, UPDATE_USER)
+		values (sys_guid(), #{stuId,jdbcType=VARCHAR}, #{bankNm,jdbcType=VARCHAR},
+		#{bankNum,jdbcType=VARCHAR}, #{salMoney,jdbcType=DECIMAL},
+		#{ffDate,jdbcType=VARCHAR},
+		#{state,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{createUser,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=DATE}, #{updateUser,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.hm.entity.salary.TStuSalary">
+		insert into HMDN.T_STU_SALARY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			ID,
+			STU_ID,
+			BANK_NM,
+			BANK_NUM,
+			SAL_MONEY,
+			FF_DATE,
+			"STATE",
+			CREATE_TIME,
+			CREATE_USER,
+			UPDATE_TIME,
+			UPDATE_USER,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=VARCHAR},
+			#{stuId,jdbcType=VARCHAR},
+			#{bankNm,jdbcType=VARCHAR},
+			#{bankNum,jdbcType=VARCHAR},
+			#{salMoney,jdbcType=DECIMAL},
+			#{ffDate,jdbcType=VARCHAR},
+			#{state,jdbcType=VARCHAR},
+			#{createTime,jdbcType=DATE},
+			#{createUser,jdbcType=VARCHAR},
+			#{updateTime,jdbcType=DATE},
+			#{updateUser,jdbcType=VARCHAR},
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.hm.entity.salary.TStuSalary">
+		update HMDN.T_STU_SALARY
+		set STU_ID = #{stuId,jdbcType=VARCHAR},
+		BANK_NM = #{bankNm,jdbcType=VARCHAR},
+		BANK_NUM = #{bankNum,jdbcType=VARCHAR},
+		SAL_MONEY = #{salMoney,jdbcType=DECIMAL},
+		FF_DATE = #{ffDate,jdbcType=VARCHAR},
+		"STATE" = #{state,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=DATE},
+		CREATE_USER = #{createUser,jdbcType=VARCHAR},
+		UPDATE_TIME = #{updateTime,jdbcType=DATE},
+		UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- ==========================================自定义SQL========================================== -->
+	<select id="selectClass" resultType="com.hm.entity.clzss.TBasiClzss">
+		select id,name from HMDN.t_basi_clzss where
+		to_date(END_DATE,'yyyy-MM-dd') &gt; sysdate order by CREATE_TIME DESC
+	</select>
+	<select id="selectStu" resultType="com.hm.entity.student.TEndStudent">
+		select stu.id,stu.name,stu.sex,stu.phone,stu.card,
+		(select sa.state from t_stu_salary sa where sa.STU_ID=stu.id and
+		to_char(sa.CREATE_TIME,'yyyymm')=to_char(sysdate,'yyyymm')) AS
+		endState
+		from HMDN.t_end_student stu
+		inner join t_clzss_student clz on stu.id=clz.STU_ID and clz.CLZ_ID=#{clzId}
+		order by stu.CREATE_TIME desc
+	</select>
+	<select id="findByStuId" resultType="com.hm.entity.salary.TStuSalary">
+		select sa.id as id,
+		sa.stu_id as stuId,
+		sa.BANK_NM as bankNm,
+		sa.BANK_NUM as bankNum,
+		sa.SAL_MONEY as salMoney,
+		(select count(id) from t_stu_salary tsa where tsa.stu_id=#{id} and
+		to_char(sa.CREATE_TIME,'yyyymm') &lt;= to_char(sysdate,'yyyymm') and STATE = '1') as
+		state
+		from t_stu_salary sa
+		where sa.STU_ID=#{id}
+		<if test="flag == 1">
+			and to_char(sa.CREATE_TIME,'yyyymm')=to_char(sysdate,'yyyymm')
+		</if>
+		<if test="flag == 0">
+			and rownum = 1
+		</if>
+	</select>
+	<update id="updateSalary">
+		update t_stu_salary set
+		BANK_NM=#{sal.bankNm},BANK_NUM=#{sal.bankNum},SAL_MONEY=#{sal.salMoney},UPDATE_TIME = sysdate,
+		UPDATE_USER = #{sal.updateUser}
+		where ID=#{sal.id}
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hm.entity.salary.TStuSalary">
+		update HMDN.T_STU_SALARY set
+		FF_DATE = to_char(sysdate,'yyyyMMdd'),
+		STATE = '1',
+		UPDATE_TIME = sysdate,
+		UPDATE_USER = #{sal.updateUser}
+		where ID = #{sal.id}
+	</update>
+	<insert id="insertSalary" parameterType="com.hm.entity.salary.TStuSalary">
+		insert into HMDN.T_STU_SALARY (ID, STU_ID, BANK_NM,
+		BANK_NUM, SAL_MONEY, STATE, CREATE_TIME, CREATE_USER,
+		UPDATE_TIME, UPDATE_USER)
+		values (sys_guid(), #{sal.stuId}, #{sal.bankNm},
+		#{sal.bankNum}, #{sal.salMoney}, '0', #{sal.createTime}, #{sal.createUser},
+		#{sal.updateTime}, #{sal.updateUser})
+	</insert>
+	<select id="selectSal" resultType="com.hm.entity.salary.TStuSalary">
+		select ID,BANK_NM, BANK_NUM, SAL_MONEY, STATE,(select stu.NAME from
+		t_end_student stu where sa.STU_ID=stu.id) as createUser from
+		HMDN.T_STU_SALARY sa where 1=1
+		<if test="month != null">
+			and to_char(CREATE_TIME,'yyyymm') = #{month}
+		</if>
+		<if test="state != null">
+			and STATE = #{state}
+		</if>
+	</select>
+	<select id="getBankNm" resultType="java.util.Map">
+  		select r.id id, r.name name, r.name nm
+		from t_basi_code r
+		where delflag = '0' and KIND='ban'
+  	</select>
+</mapper>

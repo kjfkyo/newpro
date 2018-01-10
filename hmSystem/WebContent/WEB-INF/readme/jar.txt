@@ -1,0 +1,27 @@
+aopalliance-1.0.jar---------------------------------这个包是AOP联盟的API包，里面包含了针对面向切面的接口，通常spring等其它具备动态织入功能的框架依赖此包
+aspectjweaver-1.7.4.jar-----------------------------这是Spring AOP所要用到的。
+commons-logging-1.2.jar-----------------------------实现log4j,sl4j,jdk的log等日志管理系统的接口。内部有一个Simple logger的简单实现，但是功能很弱。所以使用common-logging，通常都是配合着log4j来使用
+commons-collections-3.2.2.jar-----------------------apache的集合框架包(如:map等)，比jdk自带的功能多一点。
+druid-1.0.29.jar------------------------------------阿里巴巴连接池包，如果使用springjdbc的连接池可不需要次包
+jackson-annotations-2.8.5.jar-----------------------自动检测注解机制包。
+jackson-core-2.8.8.jar------------------------------自动检测核心包
+jackson-databind-2.8.8.jar--------------------------自动检测机制依赖包
+jstl-1.2.jar----------------------------------------jstl依赖包
+mybatis-3.4.4.jar-----------------------------------实现mybatis框架的工具包。
+mybatis-spring-1.3.1.jar----------------------------集合spring与mybatis框架的工具包
+mysql-connector-java-5.1.22.jar---------------------mysql数据库连接包
+ojdbc14.jar-----------------------------------------oracle数据库连接包
+servlet-api-3.0-alpha-1.jar-------------------------servlet核心包
+javax.servlet.jsp-api-2.3.1.jar---------------------servlet-jsp依赖包
+slf4j-api-1.7.25.jar--------------------------------slf4j日志包
+logback-classic-1.2.3.jar---------------------------logback日志依赖包（依赖于slf4j）
+logback-core-1.2.3.jar------------------------------logback日志核心包（依赖于slf4j）
+spring-aop-4.3.8.RELEASE.jar------------------------Spring的面向切面编程,提供AOP(面向切面编程)实现
+spring-beans-4.3.8.RELEASE.jar----------------------SpringIoC(依赖注入)的基础实现
+spring-context-4.3.8.RELEASE.jar--------------------Spring提供在基础IoC功能上的扩展服务，此外还提供许多企业级服务的支持，如邮件服务、任务调度、JNDI定位、EJB集成、远程访问、缓存以及各种视图层框架的封装等.
+spring-core-4.3.8.RELEASE.jar-----------------------Spring3.2.0的核心工具包。
+spring-expression-4.3.8.RELEASE.jar-----------------Spring表达式语言.
+spring-jdbc-4.3.8.RELEASE.jar-----------------------对JDBC的简单封装
+spring-tx-4.3.8.RELEASE.jar-------------------------是spring-context-3.2.0.RELEASE.jar依赖包,spring事物依赖包.
+spring-web-4.3.8.RELEASE.jar------------------------Spring web服务包
+spring-webmvc-4.3.8.RELEASE.jar---------------------SpringMVC核心包

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"
+       default-lazy-init="true">
+
+    <description>Spring公共配置</description>
+    <!-- 自动扫描 -->
+    <context:component-scan base-package="com.hm"/>
+    <!-- myBatis文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+        <!-- 扫描多个classpath*,匹配com/zimug/所有目录下面的dao目录下面的XML文件 -->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:com/hm/mapper/**/*.xml
+                </value>
+            </array>
+        </property>
+
+        <property name="plugins">
+            <bean class="com.hm.mybatis.MybatisSpringPageInterceptor"/>
+        </property>
+
+        <property name="typeAliasesPackage" value="com.hm"/>
+        <property name="typeAliasesSuperType" value="com.hm.entity.common.BaseEntity"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 将comrmstart.**.mapper下面所有目录下的类，依赖注入到sessionFactory -->
+        <property name="basePackage" value="com.hm.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 注解方式配置事物 
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    -->
+    <!-- 配置事务 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="create*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="remove*" propagation="REQUIRED" isolation="DEFAULT" timeout="-1"
+				read-only="false" rollback-for="java.lang.Exception" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="txMethods" expression="execution(* com.hm.service.*.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txMethods" />
+		<!-- 上面两行针对接口配置，可重复配置多个 -->
+	</aop:config>
+
+    <!-- 配置druid监控spring jdbc -->
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+          scope="prototype">
+        <property name="patterns">
+            <list>
+                <!-- 对com.hm.mapper下面的包括子目录下的所有包下的进行jdbc监控 -->
+                <value>com.hm.mapper</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 配置数据源 -->
+    <beans>
+        <context:property-placeholder
+                ignore-unresolvable="true" location="classpath*:/application.properties"/>
+        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+              init-method="init" destroy-method="close">
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+
+            <!-- 初始化连接大小 -->
+            <property name="initialSize" value="0"/>
+            <!-- 连接池最大使用连接数量 -->
+            <property name="maxActive" value="20"/>
+            <!-- 连接池最小空闲 -->
+            <property name="minIdle" value="0"/>
+            <!-- 获取连接最大等待时间 -->
+            <property name="maxWait" value="60000"/>
+
+
+            <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+            <property name="testOnBorrow" value="false"/>
+            <property name="testOnReturn" value="false"/>
+            <property name="testWhileIdle" value="true"/>
+
+            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+            <property name="minEvictableIdleTimeMillis" value="25200000"/>
+
+            <!-- 打开removeAbandoned功能 -->
+            <property name="removeAbandoned" value="true"/>
+            <!-- 1800秒，也就是30分钟 -->
+            <property name="removeAbandonedTimeout" value="1800"/>
+            <!-- 关闭abanded连接时输出错误日志 -->
+            <property name="logAbandoned" value="true"/>
+
+            <!-- 监控数据库 -->
+            <!-- <property name="filters" value="stat" /> -->
+            <property name="filters" value="mergeStat"/>
+        </bean>
+    </beans>
+    <!--<aop:config> -->
+    <!--&lt;!&ndash;在IDEA这里回报错，但是不耽误使用 &ndash;&gt; -->
+    <!--<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut"/> -->
+    <!--</aop:config> -->
+</beans>
