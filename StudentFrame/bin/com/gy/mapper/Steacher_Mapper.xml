@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.SteacherDao">
+	<select id="teacherLogin" resultType="S_teacher">
+		select * from s_teacher where name=#{name} 
+		and password=#{password}
+	</select>
+	<update id="modifyPassword">
+		update s_teacher set password=#{password} where id=#{id}
+	</update>
+	<insert id="addTeacherInfo">
+		insert into s_teacher values(null,#{name},
+		#{sex},#{title},#{age},#{password})
+	</insert>
+	<select id="selectTeacherAll" resultType="S_teacher">
+		select * from s_teacher
+	</select>
+	<select id="selectTeacherSearch" resultType="S_teacher">
+		select * from s_teacher
+		<where>
+			<if test="id!=0">
+				and id=#{id}
+			</if>
+			<if test="name!='' and name!=null">
+				and name like concat('%',#{name},'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectTeacherById" resultType="S_teacher">
+		select * from s_teacher where id=#{id}
+	</select>
+	<update id="modifyTeacherInfo">
+		update s_teacher set name=#{name},sex=#{sex},title=#{title},
+		age=#{age},password=#{password} where id=#{id}
+	</update>
+</mapper>
