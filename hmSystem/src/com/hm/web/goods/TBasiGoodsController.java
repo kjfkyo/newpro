@@ -30,6 +30,8 @@ public class TBasiGoodsController {
 	@Autowired
 	private UserMapper userMapper;
 	//查询所有的资产；类型
+	
+	String s="";
 	@RequestMapping("selectTBasiCode")
 	public String selectTBasiCodeAll(ServletRequest request, @RequestParam(value = "page", defaultValue = "1") Integer pageNo, Model model){
 		String keyword = Utils.objToStr(request.getParameter("keyword"));
