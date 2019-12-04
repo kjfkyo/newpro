@@ -114,7 +114,7 @@ public class LoginFrame extends JFrame {
 		
 		nameTextField = new JTextField();
 		nameTextField.setColumns(10);
-		
+		nameTextField.setText("请输入用户名");
 		passwordField = new JPasswordField();
 		
 		userTypeComboBox = new JComboBox();
