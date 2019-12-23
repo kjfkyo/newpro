@@ -2,6 +2,7 @@ package com.gy.view;
 
 import java.awt.EventQueue;
 
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.GroupLayout;
 import javax.swing.JOptionPane;

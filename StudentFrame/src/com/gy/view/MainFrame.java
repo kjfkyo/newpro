@@ -358,4 +358,9 @@ public class MainFrame extends JFrame {
 			menuItem_13.setEnabled(false);
 		}
 	}
+	public void close(){
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		LoginFrame lf=new LoginFrame();
+		lf.setVisible(true);
+	}
 }
