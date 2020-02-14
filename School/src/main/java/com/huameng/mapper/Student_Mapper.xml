@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huameng.dao.StudentDao">
+	<select id="selectStudentById" resultType="Student">
+		select s.*,c.c_id as "cid.c_id",c.c_name as "cid.c_name" 
+from student s,sclass c where s.c_id=c.c_id and s.s_id=#{s_id}
+	</select>
+	<update id="updateStudent">
+		update student set s_name=#{s_name},s_age=#{s_age},c_id=
+		#{cid.c_id} where s_id=#{s_id}
+	</update>
+	<select id="selectStudentPageCount" resultType="Student">
+		select * from (select s.*,rownum rn from (
+select s.*,c.c_id as "cid.c_id",c.c_name as "cid.c_name" 
+from student s,sclass c where s.c_id=c.c_id)s)
+where rn between (#{pageCount}-1)*#{pageSize}+1 and #{pageCount}*#{pageSize}
+	</select>
+	<select id="selectStudentPageAll" resultType="com.huameng.bean.Student">
+		select s.*,c.c_id as "cid.c_id",c.c_name as "cid.c_name" 
+from student s,sclass c where s.c_id=c.c_id
+	</select>
+</mapper>
